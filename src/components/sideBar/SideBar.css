@@ -1,10 +1,4 @@
-/* :root {
-    --primarycolor: #8685ef; azul
-    --secondarycolor: #ffffff; blanco
-    --thirdcolor: #faf8ff; gris
-    --fourthcolor: #e3e0f3; azul clarito
-    --contrastcolor: #ee6464; rojo
-} */
+
 
 body {
   background-color: #EDEDED;
@@ -27,6 +21,7 @@ body {
   line-height: 3.9;
   cursor: pointer;
   outline: 0;
+  z-index: 2;
 }
 
 .circular-menu.active .floating-btn {
@@ -134,11 +129,11 @@ body {
 }
 
 .circular-menu.circular-menu-left .floating-btn {
-  background-color: hsl(217, 89%, 61%);
+  background-color: #008037;
 }
 
 .circular-menu.circular-menu-left:after {
-  background-color: hsl(217, 89%, 61%);
+  background-color: #008037;
 }
 
 .circular-menu.circular-menu-left.active .floating-btn i {

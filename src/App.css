@@ -1,7 +1,33 @@
-/* :root {
-  --primarycolor: #8685ef;
-  --secondarycolor: #ffffff;
-  --thirdcolor: #faf8ff;
-  --fourthcolor: #e3e0f3;
-  --contrastcolor: #ee6464;
-} */
+:root {
+  --primarycolor: #7ED957 ; 
+  --secondarycolor: #008037  ; 
+  --thirdcolor: #faf8ff; 
+  --fourthcolor: #008037  ; 
+  --contrastcolor: #ee6464; 
+}
+
+
+.body{
+  min-height: 692px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 0;
+  overflow: auto;
+  background: rgb(14,4,48);
+  background: linear-gradient(180deg, rgba(14,4,48,1) 0%, rgba(14,4,48,1) 39%, rgba(0,128,55,1) 100%);
+}
+
+.watermark{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: -1;
+  align-items: center;
+  opacity: 0.5;
+}

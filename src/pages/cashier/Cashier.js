@@ -218,6 +218,7 @@ const Cashier = () => {
       <div className="row">
         <div className="interface">
           <div className="column2">
+
             <div className="leftspace">
               <button className="btn-update" onClick={() => HandleUpdateBalance()}>
                 Actualizar Saldo
@@ -242,11 +243,13 @@ const Cashier = () => {
               <h2 style={{ paddingLeft: "20px" }}>Realiza tu Pedido</h2>
               <div className="cardscontainer">{HandleCategory()}</div>
             </div>
+
           </div>
+          
           <div className="column1">
             <div className="container_bnt">
               <div className="menubar">
-                <h3>Orden</h3>
+                <h1 style={{ paddingLeft: "20px" }}>Orden</h1>
                 <div id="menubarbutton">
                   <button id="delete" onClick={() => context?.removeTotal()}>
                     Borrar todo

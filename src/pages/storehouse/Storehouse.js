@@ -50,7 +50,7 @@ export default class Storehouse extends Component {
     return (
       <div className="containerStore">
         <div className="back">
-          <h1>Almacen</h1>
+          {/* <h1>Almacen</h1> */}
           <div className="row">
             <div className="column1">
               <div className="container_bnt">

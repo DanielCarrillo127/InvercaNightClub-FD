@@ -1,8 +1,8 @@
 :root {
-  --primarycolor: #8685ef;
+  --primarycolor: #7ED957;
   --secondarycolor: #ffffff;
   --thirdcolor: #faf8ff;
-  --fourthcolor: #e3e0f3;
+  --fourthcolor: #008037;
   --contrastcolor: #ee6464;
 }
 
@@ -10,8 +10,9 @@
   border: none;
   background-color: var(--primarycolor);
   color: white;
-  width: 5%;
-  height: 24px;
+  width: 10%;
+  height: 28px;
+  font-weight: 800;
   border-radius: 7px;
   margin-left: 3px;
   margin-right: 3px;

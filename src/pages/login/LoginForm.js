@@ -3,6 +3,8 @@ import "./LoginForm.css";
 import { useHistory } from "react-router-dom";
 import { loginUser } from "../../api/users";
 
+import logoName from "../../Recursos/logo-farra.png"
+
 function LoginForm() {
   let history = useHistory();
   useEffect(() => {
@@ -57,8 +59,6 @@ function LoginForm() {
                 <div
                   className="box-root"
                   style={{
-                    backgroundImage:
-                      "linear-gradient(white 0%, rgb(247, 250, 252) 33%)",
                     flexGrow: 1,
                   }}
                 ></div>
@@ -154,9 +154,9 @@ function LoginForm() {
             style={{ flexGrow: 1, zIndex: 9 }}
           >
             <div className="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-              <h1>
-                <a href="/">Inverca Night Club</a>
-              </h1>
+            <a href="/">
+            <img src={logoName} alt='logoname' width="120" height="160" />
+            </a>
             </div>
             <div className="formbg-outer">
               <div className="formbg">

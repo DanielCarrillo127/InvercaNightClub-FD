@@ -1,9 +1,9 @@
 :root {
-    --primarycolor: #8685ef; /* azul */
-    --secondarycolor: #ffffff; /* blanco */
-    --thirdcolor: #faf8ff; /* gris */
-    --fourthcolor: #e3e0f3; /* azul clarito */
-    --contrastcolor: #ee6464; /* rojo */
+    --primarycolor: #7ED957 ; 
+    --secondarycolor: #008037  ; 
+    --thirdcolor: #faf8ff; 
+    --fourthcolor: #008037  ; 
+    --contrastcolor: #ee6464; 
 }
 
 
@@ -17,13 +17,12 @@
   }
   body {
       min-height: 100%;
-      background-color: #ffffff;
   }
   h1 {
       letter-spacing: -1px;
   }
   a {
-    color: var(--primarycolor);
+    color: #7ED957;
     text-decoration: unset;
   }
   .login-root {
@@ -42,6 +41,8 @@
       top: 0;
       z-index: 0;
       overflow: hidden;
+      background: rgb(14,4,48);
+      background: linear-gradient(180deg, rgba(14,4,48,1) 0%, rgba(14,4,48,1) 39%, rgba(0,128,55,1) 100%);
   }
   .flex-flex {
       display: flex;
@@ -73,22 +74,22 @@
       -ms-grid-rows: [top] 1fr [top-gutter] (64px) [bottom-gutter] 1fr [bottom];
   }
   .box-divider--light-all-2 {
-      box-shadow: inset 0 0 0 2px #e3e8ee;
+      box-shadow: inset 0 0 0 2px #FFDF2B;
   }
   .box-background--blue {
-      background-color: var(--primarycolor);
+      background-color:  #008037 ;
   }
   .box-background--white {
-    background-color: var(--secondarycolor); 
+    background-color: #fff; 
   }
   .box-background--blue800 {
-      background-color: var(--thirdcolor);
+      background-color: #FFDF2B;
   } 
   .box-background--gray100 {
-      background-color: var(--fourthcolor);
+      background-color: #7ED957;
   }
   .box-background--red {
-      background-color: var(--contrastcolor);
+      background-color: #FFDF2B;
   }
   .padding-top--64 {
     padding-top: 64px;
@@ -156,23 +157,23 @@
       min-height: 44px;
       border: unset;
       border-radius: 4px;
-      outline-color: rgb(84 105 212 / 0.5);
+      outline-color: rgb(0, 128, 55 / 0.5);
       background-color: rgb(255, 255, 255);
       box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
-                  rgba(60, 66, 87, 0.16) 0px 0px 0px 1px, 
+                  rgba(0, 128, 55, 0.16) 0px 0px 0px 1px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px;
   }
   
   input[type="submit"] {
-      background-color: var(--primarycolor);
+      background-color: #7ED957;
       box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, 
-                  rgb(84, 105, 212) 0px 0px 0px 1px, 
+                  rgb(0, 128, 55) 0px 0px 0px 1px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;
@@ -181,11 +182,11 @@
       cursor: pointer;
   }
   .button{
-    background-color: var(--primarycolor);
+    background-color: #7ED957;
       box-shadow: rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0.12) 0px 1px 1px 0px, 
-                  rgb(84, 105, 212) 0px 0px 0px 1px, 
+                  rgb(0, 128, 55) 0px 0px 0px 1px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(0, 0, 0, 0) 0px 0px 0px 0px, 
                   rgba(60, 66, 87, 0.08) 0px 2px 5px 0px;
@@ -218,7 +219,7 @@
       text-align: center;
   }
   .listing a {
-      color: #697386;
+      color: #fff;
       font-weight: 600;
       margin: 0 10px;
   }

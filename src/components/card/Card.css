@@ -1,8 +1,8 @@
 :root {
-  --primarycolor: #8685ef;
+  --primarycolor: #7ED957;
   --secondarycolor: #ffffff;
   --thirdcolor: #faf8ff;
-  --fourthcolor: #e3e0f3;
+  --fourthcolor: #008037;
   --contrastcolor: #ee6464;
 }
 .shape {
@@ -14,11 +14,11 @@
   height: 300px;
   padding: 10px 10px 10px 10px;
   margin-top: 20px;
+  margin-bottom: 10px;
   box-shadow: 2px 3px 2px 1px rgba(227, 224, 243, 0.25);
   padding: auto;
   text-align: center;
   border-radius: 32px;
-  margin-left: 1px;
 }
 .shape p {
   color: var(--primarycolor);
@@ -31,6 +31,7 @@ h4 {
 .shape img {
   width: 100%;
   height: 150px;
+  border-radius: 16%;
 }
 .shape h4 {
   font-size: 16px;
@@ -38,8 +39,11 @@ h4 {
 .shape:hover {
   cursor: pointer;
   /* animation: scalecard 1s ease; */
-  background-color: #dbdbfa;
+  background-color: #fcec8d ;
 }
+
+
+
 .content {
   display: block;
 }
@@ -51,16 +55,3 @@ h4 {
     transform: scale3D(1.3, 1.3, 1.3);
   }
 }
-/* .button {
-  background-color: var(--primarycolor);
-  color: var(--secondarycolor);
-  border-radius: 32px;
-  border: none;
-  height: 30px;
-  transition: 0.7s;
-
-}
-.button:hover {
-  background-color: #706fa8;
-  cursor: pointer;
-} */

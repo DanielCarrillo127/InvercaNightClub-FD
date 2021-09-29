@@ -1,9 +1,9 @@
 :root {
-  --primarycolor: #8685ef; /* azul */
-  --secondarycolor: #ffffff; /* blanco */
-  --thirdcolor: #faf8ff; /* gris */
-  --fourthcolor: #e3e0f3; /* azul clarito */
-  --contrastcolor: #ee6464; /* rojo */
+  --primarycolor: #7ED957 ; 
+  --secondarycolor: #008037  ; 
+  --thirdcolor: #faf8ff; 
+  --fourthcolor: #008037  ; 
+  --contrastcolor: #ee6464; 
 }
 
 .Modal {
@@ -42,7 +42,7 @@
     font-size: 16px;
   }
   .Modal__close-button:hover {
-    color: var(--contrastcolor);
+    color: red;
   }
 
   
@@ -62,23 +62,22 @@
   input {
     width: 60%;
     border: 0;
-    border-bottom: 1px solid var(--fourthcolor);
+    border-bottom: 1px solid #008037;
     font-size: 15px;
     font-weight: 300;
-    color: #797A9E;
     letter-spacing: 0.11em;
     margin-bottom: 10px;
     
   }
 
     input::placeholder {
-      color: #C3C3D8;
+      color: #008037;
       font-size: 10px;
     }
 
     input:focus {
       outline: 0;
-      border-bottom: 1px solid var(--primarycolor);
+      border-bottom: 1px solid #008037;
       transition: 0.6s all ease;
     }
 

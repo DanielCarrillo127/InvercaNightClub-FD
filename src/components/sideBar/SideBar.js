@@ -6,8 +6,9 @@ import {
   IoPersonCircleOutline,
 } from "react-icons/io5";
 import { FiTruck } from "react-icons/fi";
-import { SiCoffeescript } from "react-icons/si";
+
 import { useHistory } from "react-router-dom";
+import logoName from "../../Recursos/rayoprimoFA.svg"
 
 function SideBar() {
   let history = useHistory();
@@ -24,13 +25,14 @@ function SideBar() {
 
     <div id="circularMenu1" className="circular-menu circular-menu-left">
       <p className="floating-btn"  onClick={() => HandleActive()}>
-        <SiCoffeescript className="nav__logo-icon" />
+        {/* <IoBeerOutline className="nav__logo-icon" size={25} /> */}
+        <img src={logoName} alt='logoname' width="40" height="60" />
       </p>
       <menu className="items-wrapper">
-        <a href="/cashier" className="menu-item"><IoStorefrontOutline className="icon2" size={35} /> </a>
-        <a href="/storehouse" className="menu-item"> <FiTruck className="icon" size={30}  /></a>
-        <a href="/dashboard" className="menu-item"> <IoPersonCircleOutline className="icon2" size={40} /></a>
-        <p onClick={HandleLogOut} className="menu-item"><IoLogOutOutline className="icon2" size={35} /></p>
+        <a href="/cashier" className="menu-item"><IoStorefrontOutline className="icon" size={25} /> </a>
+        <a href="/storehouse" className="menu-item"> <FiTruck className="icon" size={25}  /></a>
+        <a href="/dashboard" className="menu-item"> <IoPersonCircleOutline className="icon2" size={35} /></a>
+        <p onClick={HandleLogOut} className="menu-item"><IoLogOutOutline className="icon2" size={32} /></p>
       </menu>
     </div>
   );
