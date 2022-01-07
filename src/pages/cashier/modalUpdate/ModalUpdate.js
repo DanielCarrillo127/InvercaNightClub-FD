@@ -11,11 +11,32 @@ export default function ModalUpdate(props) {
     const [newBalance, setNewbalance] = useState();
     const [customer, SetCustomer] = useState([]);
     const [info, SetInfo] = useState(false);
+    const [paytypeid, setPaytypeid] = useState("");
+    const [paycomplement, setPaycomplement] = useState("");
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'COP',
     });
+
+    const InputHandleComplement = () => {
+        if (paytypeid ==='Nequi' | paytypeid === 'Banco') {
+          return (
+            <div className="reference">
+              <input
+                id="inputcomplement"
+                type="text"
+                placeholder="Referencia de la Transferencia"
+                onChange={(e) => setPaycomplement(e.target.value)}
+              />
+            </div>
+          )
+        } else {
+          return (<>
+          </>)
+        }
+      }
+
 
     const handleClickSearch = () => {
         FindUser()
@@ -32,7 +53,7 @@ export default function ModalUpdate(props) {
                 if (res.status === 201) {
                     alert("Usuario Encontrado");
                     SetCustomer(res.data);
-                    console.log(res.data.Customer);
+                    // console.log(res.data.Customer);
                     SetInfo(true);
                 }
             })
@@ -72,11 +93,13 @@ export default function ModalUpdate(props) {
                 method: "POST",
                 url: `${ApiUrl}casher/UpdateCustomerBalance`,
                 headers: { Authorization: `${window.localStorage.getItem("USER_KEY")}` },
-                data: { cedula: `${cedula}`, amount: `${newBalance}` },
+                data: { cedula: `${cedula}`, amount: `${newBalance}`, paytypeid: `${paytypeid}`, paycomplement: `${paycomplement}` },
             })
                 .then((res) => {
                     if (res.status === 201) {
                         alert("Se logro actualizar el saldo");
+                        SetInfo(false)
+                        document.getElementById("inputid").value = "";
                         document.getElementById("inputBalance").value = "";
                     }
                 })
@@ -105,7 +128,7 @@ export default function ModalUpdate(props) {
                     <div>
                         <h1>Actualizar Saldo del Cliente</h1>
                         <label>ingrese la cedula del cliente:</label>
-                        <input className="" type="text" onChange={(e) => { setCedula(e.target.value); }} required />
+                        <input id="inputid" className="inputid" type="text" onChange={(e) => { setCedula(e.target.value); }} required />
                         {infoCustomer()}
                         <button className="btn--cart" onClick={() => handleClickSearch()}>
                             Encontrar Usuario
@@ -115,6 +138,28 @@ export default function ModalUpdate(props) {
                         <input className="" id="inputBalance" type="text" onChange={(e) => { setNewbalance(e.target.value); }} required />
 
                     </div>
+                    <label >Tipo de pago: {paytypeid} </label>
+                    <div className="paytype_container">
+                            <button
+                                className="paytype_button"
+                                onClick={() => setPaytypeid('Nequi')}
+                            >
+                                Nequi
+                            </button>
+                            <button
+                                className="paytype_button"
+                                onClick={() => setPaytypeid('Efectivo')}
+                            >
+                                Efectivo
+                            </button>
+                            <button
+                                className="paytype_button"
+                                onClick={() => setPaytypeid('Banco')}
+                            >
+                                Banco
+                            </button>
+                        </div>
+                        {InputHandleComplement()}
                     <button className="btn--cart" onClick={() => handleClickModal()}>
                         Actualizar Saldo
                     </button>

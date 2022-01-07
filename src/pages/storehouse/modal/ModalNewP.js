@@ -2,7 +2,8 @@ import React, { useContext, useState } from "react";
 import ReactDOM from "react-dom";
 import "./Modal.css";
 import { DataContext } from '../../../api/products';
-
+import { storage } from "../../../firebase";
+import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
 
 export default function Modal(props) {
 
@@ -12,15 +13,46 @@ export default function Modal(props) {
     const [price, setPrice] = useState();
     const [quantity, setQuantity] = useState();
     const [category, setCategory] = useState("");
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState(null);
+    const [imageRef, setImageRef] = useState("");
+    const [progress, setProgress] = useState(0);
 
     const handleClickModal = () => {
-        // 'product1', '3000', '3','extra', 'https://bodegaeltrebol.com/wp-content/uploads/2018/12/aa-134.png'
-        addToCart()
+        uploudImage();
     }
+
     const addToCart = () => {
-        context?.addProduct(window.localStorage.USER_KEY, proname, price, quantity, category, image);
+        context?.addProduct(window.localStorage.USER_KEY, proname, price, quantity, category, imageRef);
+        setProgress(0);
         props.onClose();
+    };
+
+    const handleChange = e => {
+        if (e.target.files[0]) {
+            setImage(e.target.files[0]);
+        }
+      };
+
+    const uploudImage = () => {
+        const storageRef = ref(storage,`/files/${proname}`);
+        const uploadTask = uploadBytesResumable(storageRef,image);
+        uploadTask.on("state_changed",(snapshot) => {
+            const prog = Math.round(
+                (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            )
+            setProgress(prog);
+        }, (err)=>console.log(err),
+            () => {
+                getDownloadURL(uploadTask.snapshot.ref)
+                .then(url => {
+                    setImageRef(url);
+                    console.log(imageRef)
+                    if(imageRef !== ""){
+                        setTimeout(addToCart, 3000);
+                    }
+                })    
+            }
+        );
     };
 
     if (!props.isOpen) {
@@ -45,8 +77,8 @@ export default function Modal(props) {
                         <label>Ingrese la categoria del producto:</label>
                         <input className="" type="text" onChange={(e) => { setCategory(e.target.value); }} required />
                         <label>Ingrese la imagen del producto:</label>
-                        <input className="" type="text" placeholder='link/url' onChange={(e) => { setImage(e.target.value); }} required />
-                        <input className="" type="file" disabled onChange={(e) => { setImage(e.target.value); }} required />
+                        <input className="" type="file" accept=".jpg,.png,.jpeg" onChange={handleChange} required />
+                        <h5>Cargando: {progress}% </h5>
                     </div>
                     <button className="btn--cart" onClick={() => handleClickModal()}>
                         Agregar Producto

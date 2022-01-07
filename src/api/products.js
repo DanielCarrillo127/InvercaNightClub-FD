@@ -1,7 +1,8 @@
 import axios from "axios";
 import React, { Component } from 'react'
 import { ApiUrl } from "../Url";
-
+import { storage } from "../firebase";
+import { ref } from "@firebase/storage";
 
 export const DataContext = React.createContext();
 
@@ -39,76 +40,76 @@ export default class DataProviderProducts extends Component {
         }
     };
 
-    getTotal = ()=>{
-        const{cart} = this.state;
+    getTotal = () => {
+        const { cart } = this.state;
         const res = cart.reduce((prev, item) => {
             return prev + (item.price * item.quantity);
-        },0)
-        this.setState({total: res})
+        }, 0)
+        this.setState({ total: res })
     };
 
-    addCart = (id) => {    
-        const {products, cart} = this.state;
+    addCart = (id) => {
+        const { products, cart } = this.state;
         // cambiar esto 
-        const check = cart.every(item =>{
+        const check = cart.every(item => {
             return item.productId !== id
         })
         // check true primera insersion de producto / false producto existente 
-        if(check){
-            const data = products.filter(product =>{
+        if (check) {
+            const data = products.filter(product => {
                 return product.productid === id
             })
             console.log(data[0].proname)
             const AddData = {
                 'productId': data[0].productid,
-                'description':  data[0].proname,
+                'description': data[0].proname,
                 'quantity': 1,
-                'tax': 0 ,
+                'tax': 0,
                 'price': data[0].price
             }
             //set state cart
-            cart.push({...AddData})
+            cart.push({ ...AddData })
             this.setState({ cart: cart });
             this.getTotal();
             console.log('Nuevo')
-        }else{
+        } else {
             console.log('existente')
-            const data = products.filter(product =>{
+            const data = products.filter(product => {
                 return product.productid === id
             })
             console.log('data existente', data)
             this.increase(data[0].productid)
         }
-        console.log('id a agregar: ', id, check , cart)
+        console.log('id a agregar: ', id, check, cart)
     };
 
-    reduction = id =>{
-        console.log('se reducio' , id)
+    reduction = id => {
+        console.log('se reducio', id)
         const { cart } = this.state;
-        cart.forEach(item =>{
-            if(item.productId === id){
-                item.quantity === 1 ? item.quantity = 1 : item.quantity -=1;
+        cart.forEach(item => {
+            if (item.productId === id) {
+                item.quantity === 1 ? item.quantity = 1 : item.quantity -= 1;
             }
         })
-        this.setState({cart: cart});
+        this.setState({ cart: cart });
         this.getTotal();
     };
 
-    increase = id =>{
+    increase = id => {
         const { cart } = this.state;
-        cart.forEach(item =>{
-            if(item.productId === id){
+        cart.forEach(item => {
+            if (item.productId === id) {
                 item.quantity += 1;
             }
         })
-        console.log('se aumento' , id)
-        this.setState({cart: cart});
+        console.log('se aumento', id)
+        this.setState({ cart: cart });
         this.getTotal();
     };
 
     //final push to the order
-    addOrder = (customerid,token,ordertype,paytype,paycomplement) => {
-        const{cart, total} = this.state;
+    addOrder = (customerid, token, ordertype, paytype, paycomplement) => {
+        const { cart, total } = this.state;
         const DATA = {
             customerid,
             cart,
@@ -124,22 +125,22 @@ export default class DataProviderProducts extends Component {
             data: DATA,
         })
             .then((res) => {
-                 console.log(res);
-                 if (res.status === 201) {
-                     alert('orden recibida exitosamente')
-                     this.removeTotal()
-                 }
+                console.log(res);
+                if (res.status === 201) {
+                    alert('orden recibida exitosamente')
+                    this.removeTotal()
+                }
             })
             .catch((err) => {
                 console.log(err);
-                alert('algo ha sucedido, no se puede realizar la orden',err)
+                alert('algo ha sucedido, no se puede realizar la orden', err)
             });
     }
 
     // tools for storehouse
-    addProduct = (token,proname,price,quantity,category,image) => {
-        console.log('entro')
-        const DATA = {proname,price,quantity,category,image};
+    addProduct = (token, proname, price, quantity, category, image) => {
+
+        const DATA = { proname, price, quantity, category, image };
         axios({
             method: "POST",
             url: `${ApiUrl}worker/addProduct`,
@@ -147,10 +148,10 @@ export default class DataProviderProducts extends Component {
             data: DATA,
         })
             .then((res) => {
-                 console.log(res);
-                 if (res.status === 201) {
-                     alert('producto agregado exitosamente')
-                 }
+                console.log(res);
+                if (res.status === 201) {
+                    alert('producto agregado exitosamente')
+                }
             })
             .catch((err) => {
                 console.log(err);
@@ -159,15 +160,47 @@ export default class DataProviderProducts extends Component {
     }
 
     deleteProduct = (token, productId) => {
+
+        const { products } = this.state;
+        const product = products.filter((product) => product.productid === productId)
+
         axios({
             method: "DELETE",
             url: `${ApiUrl}worker/deleteProduct`,
             headers: { "Authorization": `${token}`, productid: `${productId}` },
         })
             .then((res) => {
-                console.log(res) ;
+                console.log(res);
                 if (res.status === 200) {
-                    alert('producto eliminado exitosamente')
+
+
+                    //1.
+                    let pictureRef = storage.refFromURL(product);
+                    //2.
+                    console.log(pictureRef)
+                    pictureRef.delete()
+                        .then(() => {
+                            //3.
+                            console.log("success");
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+
+
+                    // const storageRef = ref(storage, product.image)
+                    // // const desertRef = storage().ref(storageRef.fullPath) 
+
+                    // // Delete the file
+                    // storageRef.delete().then(function () {
+                    //     // File deleted successfully
+                    //     alert('producto eliminado exitosamente')
+                    // }).catch(function (error) {
+                    //     console.log(error)
+                    // });
+
+
                 }
             })
             .catch((err) => {
@@ -176,15 +209,15 @@ export default class DataProviderProducts extends Component {
             });
     }
 
-    editProductprice = (token, productId ,price) => {
+    editProductprice = (token, productId, price) => {
         axios({
             method: "PUT",
             url: `${ApiUrl}worker/editPrice`,
-            headers: { "Authorization": `${token}`},
-            data: {productid: `${productId}`, price: `${price}`  }
+            headers: { "Authorization": `${token}` },
+            data: { productid: `${productId}`, price: `${price}` }
         })
             .then((res) => {
-                console.log(res) ;
+                console.log(res);
                 if (res.status === 200) {
                     alert('producto editado exitosamente')
                 }
@@ -195,15 +228,15 @@ export default class DataProviderProducts extends Component {
             });
     }
 
-    editProductquantity = (token, productId ,quantity) => {
+    editProductquantity = (token, productId, quantity) => {
         axios({
             method: "PUT",
             url: `${ApiUrl}worker/editQuantity`,
             headers: { "Authorization": `${token}` },
-            data: {productid: `${productId}`, quantity: `${quantity}`  }
+            data: { productid: `${productId}`, quantity: `${quantity}` }
         })
             .then((res) => {
-                console.log(res) ;
+                console.log(res);
                 if (res.status === 200) {
                     alert('producto editado exitosamente')
                 }
@@ -214,51 +247,45 @@ export default class DataProviderProducts extends Component {
             });
     }
 
-    NewUser = (token,cedula,firstname,lastname,phoneNumber,credit) => {
+    NewUser = (token, cedula, firstname, lastname, phoneNumber, credit,paytypeid,paycomplement) => {
         console.log('entro')
         axios({
             method: "POST",
             url: `${ApiUrl}casher/registerCustomer`,
             headers: { "Authorization": `${token}` },
-            data: {cedula: `${cedula}`, firstName: `${firstname}`,lastName: `${lastname}`, phoneNumber: `${phoneNumber}`, credit: `${credit}`}
+            data: { cedula: `${cedula}`, firstName: `${firstname}`, lastName: `${lastname}`, phoneNumber: `${phoneNumber}`, credit: `${credit}`, paytypeid: `${paytypeid}`, paycomplement: `${paycomplement}` }
         })
             .then((res) => {
-                 console.log(res);
-                 if (res.status === 201) {
-                     alert('Cliente agregado exitosamente')
-                 }
+                console.log(res);
+                if (res.status === 201) {
+                    alert('Cliente agregado exitosamente')
+                }
             })
             .catch((err) => {
                 console.log(err);
                 alert('algo ha sucedido, no se puedo registrar el cliente')
             });
     }
-    
+
     componentDidUpdate() {
         localStorage.setItem('dataCart', JSON.stringify(this.state.cart))
         localStorage.setItem('dataTotal', JSON.stringify(this.state.total))
     };
 
 
-    UpdateProductList(){
-        try {
-            axios({
-                method: "GET",
-                url: `${ApiUrl}product/getProduct`,
-                headers: { "Authorization": `${window.localStorage.getItem("USER_KEY")}` },
-            }
-            ).then((res) => {
-                // console.log(res)
-                this.setState({ products: res.data.products });
-                return res;
-            })
-                .catch((err) => {
-                    console.log(err)
-                });
-
-        } catch (err) {
-            console.error(err.message);
+    UpdateProductList = () => {
+        axios({
+            method: "GET",
+            url: `${ApiUrl}product/getProduct`,
+            headers: { "Authorization": `${window.localStorage.getItem("USER_KEY")}` },
         }
+        ).then((res) => {
+            this.setState({ products: res.data.products })
+            return res;
+        })
+            .catch((err) => {
+                console.log(err)
+            });
     }
 
     componentDidMount() {
@@ -293,11 +320,11 @@ export default class DataProviderProducts extends Component {
 
     render() {
         const { products, cart, total } = this.state;
-        const { addCart,removeProduct, getTotal, removeTotal, addProduct,deleteProduct,editProductprice,editProductquantity,reduction,increase,addOrder,NewUser,UpdateProductList } = this;
+        const { addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, reduction, increase, addOrder, NewUser, UpdateProductList } = this;
 
         return (
             <DataContext.Provider
-                value={{ products, cart, total,reduction,increase,addCart,removeProduct, getTotal, removeTotal,addProduct,deleteProduct,editProductprice,editProductquantity,addOrder,NewUser,UpdateProductList }}>
+                value={{ products, cart, total, reduction, increase, addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, addOrder, NewUser, UpdateProductList }}>
                 {this.props.children}
             </DataContext.Provider>
         )

@@ -83,7 +83,7 @@ const Cashier = () => {
 
     if (props === 3) {
       SetPaytype(3);
-      SetPaytypeStr("Bancolombia");
+      SetPaytypeStr("Banco");
     }
   };
   const HandlePayOrder = (props) => {
@@ -128,7 +128,6 @@ const Cashier = () => {
     }
   };
 
-
   function HandlePaytypeR() {
 
     if (paytypeOrder === "De_contado") {
@@ -164,7 +163,7 @@ const Cashier = () => {
               className="paytype_button"
               onClick={() => HandlePaytype(3)}
             >
-              Bancolombia
+              Banco
             </button>
           </div>
           {/* input complement Nequi/Bancolombia */}
@@ -193,7 +192,6 @@ const Cashier = () => {
     }
   }
 
-
   //Manejo de las categorias
   const HandleSetCategory = (props) => {
     SetCategory(props);
@@ -210,6 +208,14 @@ const Cashier = () => {
   const HandleUpdateBalance = () => {
     setOpenModal(true);
   };
+  const HandleDeleteCart = () => {
+    context?.removeTotal()
+    SetCustomer("");
+    SetPaytypeStr("");
+    SetCustomerCC("");
+    SetPaycomplement("");
+    SetPaytypeOrder("");
+  }
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -220,9 +226,6 @@ const Cashier = () => {
           <div className="column2">
 
             <div className="leftspace">
-              <button className="btn-update" onClick={() => HandleUpdateBalance()}>
-                Actualizar Saldo
-              </button>
               <h2 style={{ paddingLeft: "20px" }}>
                 Menú
                 <span>|Categorías</span>
@@ -249,9 +252,16 @@ const Cashier = () => {
           <div className="column1">
             <div className="container_bnt">
               <div className="menubar">
-                <h1 style={{ paddingLeft: "20px" }}>Orden</h1>
+              {/* <button className="btn-update" onClick={() => HandleUpdateBalance()}>
+                Actualizar Saldo
+              </button> */}
+                <h1 style={{ paddingLeft: "20px" }}>Orden  <span className="span">|Resumen Del Pedido</span></h1>
+                <button className="btn-update" onClick={() => HandleUpdateBalance()}>
+                Actualizar Saldo
+              </button>
                 <div id="menubarbutton">
-                  <button id="delete" onClick={() => context?.removeTotal()}>
+                  
+                  <button id="delete" onClick={() => HandleDeleteCart()}>
                     Borrar todo
                   </button>
                 </div>

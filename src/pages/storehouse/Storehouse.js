@@ -127,7 +127,7 @@ export default class Storehouse extends Component {
                       </thead>
                       <tbody>
                         {products.map((item) => (
-                          <tr className="item">
+                          <tr className="item" key={item.productid}>
                             <td>{item.proname}</td>
                             <td>{item.productid}</td>
                             <td>{item.quantity}</td>
@@ -138,7 +138,7 @@ export default class Storehouse extends Component {
                       </tbody>
                     </table>
                   </div>
-                  <button className="btn btn2" disabled >
+                  <button className="btn btn2" onClick={()=> this.context.UpdateProductList()} >
                     Refrescar tabla
                   </button>
                 </div>

@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Switch,
   Redirect,
@@ -18,6 +18,7 @@ import Login from "./pages/login/LoginForm";
 import Storehouse from "./pages/storehouse/Storehouse";
 import Cashier from "./pages/cashier/Cashier";
 import Dashboard from "./pages/admin_dashboard/Dashboard";
+import ProductListing from "./pages/product_Listing/ProductListing";
 
 
 import PrivateRoute from "./PrivateRoute";
@@ -34,15 +35,23 @@ function App() {
               <Redirect to="/login" />
             </Route>
             <Route path="/login" exact component={Login}></Route>
+
             <div className="body">
               <Header name={history.location.pathname.substring(1, history.location.pathname.length)}/>
               <img className='watermark' alt='watermark' src={logoName} width="420" height="460" />
+              <Route path="/menu" component={ProductListing}></Route>
+              <div>
               <SideBar />
               <PrivateRoute path="/storehouse" exact component={Storehouse} />
               <PrivateRoute path="/dashboard" exact component={Dashboard} />
               <PrivateRoute path="/cashier" exact component={Cashier} />
-
+              </div>
+              
+              
             </div>
+            
+            
+
             <Route component={Login}></Route>
           </Switch>
         </Router>

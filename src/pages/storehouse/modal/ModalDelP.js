@@ -14,8 +14,8 @@ export default function ModalDelete(props) {
         deleteToCart()
     }
     const deleteToCart = () => {
-        console.log(proname)
-        context?.deleteProduct(window.localStorage.USER_KEY,productId );
+        console.log(productId, proname)
+        context?.deleteProduct(window.localStorage.USER_KEY,productId);
         props.onClose();
     };
 
