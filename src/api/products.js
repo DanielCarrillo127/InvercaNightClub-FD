@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { Component } from 'react'
 import { ApiUrl } from "../Url";
-import { storage } from "../firebase";
-import { ref } from "@firebase/storage";
+import { storage } from "../firebase/index";
+import {ref} from "@firebase/storage";
 
 export const DataContext = React.createContext();
 
@@ -170,37 +170,20 @@ export default class DataProviderProducts extends Component {
             headers: { "Authorization": `${token}`, productid: `${productId}` },
         })
             .then((res) => {
-                console.log(res);
+                alert('producto eliminado exitosamente')
                 if (res.status === 200) {
 
-
-                    //1.
-                    let pictureRef = storage.refFromURL(product);
-                    //2.
-                    console.log(pictureRef)
-                    pictureRef.delete()
-                        .then(() => {
-                            //3.
-                            console.log("success");
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-
-
-
-                    // const storageRef = ref(storage, product.image)
-                    // // const desertRef = storage().ref(storageRef.fullPath) 
-
-                    // // Delete the file
-                    // storageRef.delete().then(function () {
-                    //     // File deleted successfully
-                    //     alert('producto eliminado exitosamente')
+                    // var storageRef = ref(storage,`/files/${product.name}`);
+                    // console.log(storageRef)
+                    // // storageRef.child(`files/${product.name}`);
+                    // var imageRef = storageRef
+                    // console.log(imageRef)
+                    // imageRef.delete().then(function () {
+                    //       // File deleted successfully
+                    //     console.log("File Deleted")
                     // }).catch(function (error) {
                     //     console.log(error)
                     // });
-
-
                 }
             })
             .catch((err) => {

@@ -29,6 +29,7 @@ export default function Modal(props) {
 
     const handleChange = e => {
         if (e.target.files[0]) {
+            // console.log(e.target.files[0])
             setImage(e.target.files[0]);
         }
       };
