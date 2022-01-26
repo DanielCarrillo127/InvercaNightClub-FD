@@ -72,18 +72,18 @@ export default class DataProviderProducts extends Component {
             this.setState({ cart: cart });
             this.getTotal();
         } else {
-        
+
             const data = products.filter(product => {
                 return product.productid === id
             })
-           
+
             this.increase(data[0].productid)
         }
-       
+
     };
 
     reduction = id => {
-     
+
         const { cart } = this.state;
         cart.forEach(item => {
             if (item.productId === id) {
@@ -126,7 +126,7 @@ export default class DataProviderProducts extends Component {
             data: DATA,
         })
             .then((res) => {
-          
+
                 if (res.status === 201) {
                     alert('orden recibida exitosamente')
                     this.removeTotal()
@@ -166,9 +166,8 @@ export default class DataProviderProducts extends Component {
 
     deleteProduct = (token, productId) => {
 
-        // const { products } = this.state;
-        // const product = products.filter((product) => product.productid === productId)
-        
+        const { products } = this.state;
+        const product = products.filter((product) => product.productid === productId)
 
         axios({
             method: "DELETE",
@@ -178,19 +177,14 @@ export default class DataProviderProducts extends Component {
             .then((res) => {
                 alert('producto eliminado exitosamente')
                 if (res.status === 200) {
-
-                    //https://firebase.google.com/docs/storage/web/delete-files
-
-                    // const desertRef = ref(storage,`/files/${product[0].proname}.jpeg`);
-                    // // Delete the file
-                    // deleteObject(desertRef).then(() => {
-                    //     // File deleted successfully
-                    //     console.log('File deleted successfully')
-                    // }).catch((error) => {
-                    //     // Uh-oh, an error occurred!
-                    //     console.log(error)
-                    // });
-
+                    const desertRef = ref(storage, `/files/${product[0].proname}`);
+                    // Delete the file
+                    deleteObject(desertRef).then(() => {
+                        // File deleted successfully
+                    }).catch((error) => {
+                        // Uh-oh, an error occurred!
+                        console.log(error)
+                    });
                 }
             })
             .catch((err) => {
@@ -225,7 +219,7 @@ export default class DataProviderProducts extends Component {
             data: { productid: `${productId}`, quantity: `${quantity}` }
         })
             .then((res) => {
-               
+
                 if (res.status === 200) {
                     alert('producto editado exitosamente')
                 }
@@ -308,7 +302,7 @@ export default class DataProviderProducts extends Component {
                 headers: { "Authorization": `${window.localStorage.getItem("USER_KEY")}` },
             }
             ).then((res) => {
-               
+
                 this.setState({ products: res.data.products });
                 return res;
             })
