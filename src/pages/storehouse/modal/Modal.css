@@ -60,19 +60,18 @@
 
 
   input {
-    width: 60%;
+    width: 100%;
     border: 0;
     border-bottom: 1px solid #008037;
     font-size: 15px;
-    font-weight: 300;
-    letter-spacing: 0.11em;
+    font-weight: 350;
+    letter-spacing: 0.07em;
     margin-bottom: 10px;
-    
   }
 
     input::placeholder {
-      color: #008037;
-      font-size: 10px;
+      color: black;
+      font-size: 12px;
     }
 
     input:focus {

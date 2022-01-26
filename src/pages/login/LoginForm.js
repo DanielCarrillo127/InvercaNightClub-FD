@@ -16,29 +16,25 @@ function LoginForm() {
 
   const handleLogin = async () => {
     const req = await loginUser(userName, password);
-    console.log(req)
-      if (req === undefined) {
-        alert("Datos ingresados incorrectos")   
-      } 
-      else {
+    if (req === undefined) {
+      alert("Datos ingresados incorrectos")
+    }
+    else {
       localStorage.setItem("USER_KEY", req.data.token);
       const ROLE = req.data.user.role;
-        if (ROLE === 1) {
-          localStorage.setItem("ROLE", "Admin_Role");
-          console.log('vamos a admin', ROLE)
-          history.push("/dashboard");
-        }
-        if (ROLE === 2) {
-          localStorage.setItem("ROLE", "Cashier_Role");
-          console.log('vamos a cajero', ROLE)
-          history.push("/cashier");
-        }
-        if (ROLE === 3) {
-          localStorage.setItem("ROLE", "Storehouse_Role");
-          console.log('vamos a almacen', ROLE)
-          history.push("/storehouse");
-        }
-     
+      if (ROLE === 1) {
+        localStorage.setItem("ROLE", "Admin_Role");
+        history.push("/dashboard");
+      }
+      if (ROLE === 2) {
+        localStorage.setItem("ROLE", "Cashier_Role");
+        history.push("/cashier");
+      }
+      if (ROLE === 3) {
+        localStorage.setItem("ROLE", "Storehouse_Role");
+        history.push("/storehouse");
+      }
+
     }
 
   };
@@ -154,9 +150,9 @@ function LoginForm() {
             style={{ flexGrow: 1, zIndex: 9 }}
           >
             <div className="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
-            <a href="/">
-            <img src={logoName} alt='logoname' width="120" height="160" />
-            </a>
+              <a href="/">
+                <img src={logoName} alt='logoname' width="120" height="160" />
+              </a>
             </div>
             <div className="formbg-outer">
               <div className="formbg">

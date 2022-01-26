@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { Component } from 'react'
 import { ApiUrl } from "../Url";
-import { storage } from "../firebase/index";
-import {ref} from "@firebase/storage";
+
+import { storage } from "../firebase";
+import { deleteObject, ref } from "firebase/storage";
 
 export const DataContext = React.createContext();
 
@@ -59,7 +60,6 @@ export default class DataProviderProducts extends Component {
             const data = products.filter(product => {
                 return product.productid === id
             })
-            console.log(data[0].proname)
             const AddData = {
                 'productId': data[0].productid,
                 'description': data[0].proname,
@@ -71,20 +71,19 @@ export default class DataProviderProducts extends Component {
             cart.push({ ...AddData })
             this.setState({ cart: cart });
             this.getTotal();
-            console.log('Nuevo')
         } else {
-            console.log('existente')
+        
             const data = products.filter(product => {
                 return product.productid === id
             })
-            console.log('data existente', data)
+           
             this.increase(data[0].productid)
         }
-        console.log('id a agregar: ', id, check, cart)
+       
     };
 
     reduction = id => {
-        console.log('se reducio', id)
+     
         const { cart } = this.state;
         cart.forEach(item => {
             if (item.productId === id) {
@@ -96,13 +95,15 @@ export default class DataProviderProducts extends Component {
     };
 
     increase = id => {
-        const { cart } = this.state;
+        const { cart, products } = this.state;
+        const product = products.filter((product) => product.productid === id)
         cart.forEach(item => {
             if (item.productId === id) {
-                item.quantity += 1;
+                if (item.quantity < product[0].quantity) {
+                    item.quantity += 1;
+                }
             }
         })
-        console.log('se aumento', id)
         this.setState({ cart: cart });
         this.getTotal();
     };
@@ -125,11 +126,16 @@ export default class DataProviderProducts extends Component {
             data: DATA,
         })
             .then((res) => {
-                console.log(res);
+          
                 if (res.status === 201) {
                     alert('orden recibida exitosamente')
                     this.removeTotal()
                 }
+                if (res.status === 500) {
+                    alert('orden Denegada no se tienen suficientes unidades del producto', res.Product)
+                    this.removeTotal()
+                }
+
             })
             .catch((err) => {
                 console.log(err);
@@ -148,7 +154,6 @@ export default class DataProviderProducts extends Component {
             data: DATA,
         })
             .then((res) => {
-                console.log(res);
                 if (res.status === 201) {
                     alert('producto agregado exitosamente')
                 }
@@ -161,8 +166,9 @@ export default class DataProviderProducts extends Component {
 
     deleteProduct = (token, productId) => {
 
-        const { products } = this.state;
-        const product = products.filter((product) => product.productid === productId)
+        // const { products } = this.state;
+        // const product = products.filter((product) => product.productid === productId)
+        
 
         axios({
             method: "DELETE",
@@ -173,17 +179,18 @@ export default class DataProviderProducts extends Component {
                 alert('producto eliminado exitosamente')
                 if (res.status === 200) {
 
-                    // var storageRef = ref(storage,`/files/${product.name}`);
-                    // console.log(storageRef)
-                    // // storageRef.child(`files/${product.name}`);
-                    // var imageRef = storageRef
-                    // console.log(imageRef)
-                    // imageRef.delete().then(function () {
-                    //       // File deleted successfully
-                    //     console.log("File Deleted")
-                    // }).catch(function (error) {
+                    //https://firebase.google.com/docs/storage/web/delete-files
+
+                    // const desertRef = ref(storage,`/files/${product[0].proname}.jpeg`);
+                    // // Delete the file
+                    // deleteObject(desertRef).then(() => {
+                    //     // File deleted successfully
+                    //     console.log('File deleted successfully')
+                    // }).catch((error) => {
+                    //     // Uh-oh, an error occurred!
                     //     console.log(error)
                     // });
+
                 }
             })
             .catch((err) => {
@@ -200,7 +207,6 @@ export default class DataProviderProducts extends Component {
             data: { productid: `${productId}`, price: `${price}` }
         })
             .then((res) => {
-                console.log(res);
                 if (res.status === 200) {
                     alert('producto editado exitosamente')
                 }
@@ -219,7 +225,7 @@ export default class DataProviderProducts extends Component {
             data: { productid: `${productId}`, quantity: `${quantity}` }
         })
             .then((res) => {
-                console.log(res);
+               
                 if (res.status === 200) {
                     alert('producto editado exitosamente')
                 }
@@ -230,8 +236,7 @@ export default class DataProviderProducts extends Component {
             });
     }
 
-    NewUser = (token, cedula, firstname, lastname, phoneNumber, credit,paytypeid,paycomplement) => {
-        console.log('entro')
+    NewUser = (token, cedula, firstname, lastname, phoneNumber, credit, paytypeid, paycomplement) => {
         axios({
             method: "POST",
             url: `${ApiUrl}casher/registerCustomer`,
@@ -239,7 +244,6 @@ export default class DataProviderProducts extends Component {
             data: { cedula: `${cedula}`, firstName: `${firstname}`, lastName: `${lastname}`, phoneNumber: `${phoneNumber}`, credit: `${credit}`, paytypeid: `${paytypeid}`, paycomplement: `${paycomplement}` }
         })
             .then((res) => {
-                console.log(res);
                 if (res.status === 201) {
                     alert('Cliente agregado exitosamente')
                 }
@@ -250,11 +254,27 @@ export default class DataProviderProducts extends Component {
             });
     }
 
+    DelUser = (token, cedula) => {
+        axios({
+            method: "DELETE",
+            url: `${ApiUrl}worker/deleteCustomer`,
+            headers: { "Authorization": `${token}` },
+            data: { cedula: `${cedula}` }
+        })
+            .then((res) => {
+                if (res.status === 200) {
+                    alert('Cliente eliminado exitosamente')
+                }
+            })
+            .catch((err) => {
+                alert('algo ha sucedido, no se puedo eliminar el cliente, verifique la informacións')
+            });
+    }
+
     componentDidUpdate() {
         localStorage.setItem('dataCart', JSON.stringify(this.state.cart))
         localStorage.setItem('dataTotal', JSON.stringify(this.state.total))
     };
-
 
     UpdateProductList = () => {
         axios({
@@ -288,7 +308,7 @@ export default class DataProviderProducts extends Component {
                 headers: { "Authorization": `${window.localStorage.getItem("USER_KEY")}` },
             }
             ).then((res) => {
-                // console.log(res)
+               
                 this.setState({ products: res.data.products });
                 return res;
             })
@@ -303,11 +323,11 @@ export default class DataProviderProducts extends Component {
 
     render() {
         const { products, cart, total } = this.state;
-        const { addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, reduction, increase, addOrder, NewUser, UpdateProductList } = this;
+        const { addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, reduction, increase, addOrder, NewUser, UpdateProductList, DelUser } = this;
 
         return (
             <DataContext.Provider
-                value={{ products, cart, total, reduction, increase, addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, addOrder, NewUser, UpdateProductList }}>
+                value={{ products, cart, total, reduction, increase, addCart, removeProduct, getTotal, removeTotal, addProduct, deleteProduct, editProductprice, editProductquantity, addOrder, NewUser, UpdateProductList, DelUser }}>
                 {this.props.children}
             </DataContext.Provider>
         )

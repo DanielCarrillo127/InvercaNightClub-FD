@@ -133,7 +133,7 @@ export default function ModalUpdate(props) {
                         <button className="btn--cart" onClick={() => handleClickSearch()}>
                             Encontrar Usuario
                         </button>
-                        <p>_____________________________________________</p>
+                        <p>_____________________________________________________</p>
                         <label>ingrese el valor a recargar del cliente:</label>
                         <input className="" id="inputBalance" type="text" onChange={(e) => { setNewbalance(e.target.value); }} required />
 

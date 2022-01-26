@@ -9,7 +9,6 @@ export async function loginUser(username, password) {
         url: `${ApiUrl}`,
         headers: { "username": `${username}`,"password": `${password}` },
       })
-      console.log("res",request)
       return request;
     } catch (err) {
       console.error(err.message);

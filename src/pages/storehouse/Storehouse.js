@@ -8,7 +8,8 @@ import { DataContext } from "../../api/products";
 import Modal from "./modal/ModalNewP";
 import ModalDelete from "./modal/ModalDelP";
 import ModalEdit from "./modal/ModalEditP";
-import ModalNewUser from "./modalNewUser/ModalNewUser";
+import ModalNewUser from "./modalUser/ModalNewUser";
+import ModalDelUser from "./modalUser/ModalDelUser";
 
 const ROLE = window.localStorage.getItem("ROLE");
 
@@ -18,6 +19,7 @@ export default class Storehouse extends Component {
     openModal2: false,
     openModal3: false,
     openModal4: false,
+    openModal5: false,
   };
   componentDidMount() {
     // if (ROLE === Roles.CASHIER) {
@@ -44,6 +46,13 @@ export default class Storehouse extends Component {
     const handleOpenModalNewUser = () => {
       this.setState({ openModal4: true });
     };
+
+    const handleOpenModalDelUser = () => {
+      this.setState({ openModal5: true });
+    };
+
+    
+
 
     const { products } = this.context;
 
@@ -102,6 +111,9 @@ export default class Storehouse extends Component {
                     <button className="btn btn1" disabled>
                       Editar Cliente existente
                     </button>
+                    <button className="btn btn1"  onClick={() => handleOpenModalDelUser()}>
+                      Eliminar Cliente retenido
+                    </button>
                   </div>
                 </div>
               </>}
@@ -138,7 +150,7 @@ export default class Storehouse extends Component {
                       </tbody>
                     </table>
                   </div>
-                  <button className="btn btn2" onClick={()=> this.context.UpdateProductList()} >
+                  <button className="btn btn2" onClick={() => this.context.UpdateProductList()} >
                     Refrescar tabla
                   </button>
                 </div>
@@ -167,10 +179,17 @@ export default class Storehouse extends Component {
           >
             Lorem
           </ModalEdit>
-          <ModalNewUser 
-          isOpen={this.state.openModal4} onClose={() => this.setState({ openModal4: false })}>
+          <ModalNewUser
+            isOpen={this.state.openModal4} 
+            onClose={() => this.setState({ openModal4: false })}>
             Lorem
           </ModalNewUser>
+          <ModalDelUser
+            isOpen={this.state.openModal5} 
+            onClose={() => this.setState({ openModal5: false })}>
+            Lorem
+          </ModalDelUser>
+
         </div>
       </div>
     );

@@ -12,6 +12,12 @@ import EarnDay from "./modules/EarnDay";
 import PieChart from "./modules/PieChart";
 import WeekdayBar from "./modules/WeekdayBar";
 
+import { ApiUrl } from "../../Url";
+import axios from "axios";
+
+import { storage } from "../../firebase";
+import { getDownloadURL, ref } from "firebase/storage";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
@@ -40,6 +46,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+function downloadURI(dataurl, filename) {
+  const link = document.createElement("a");
+  link.href = dataurl;
+  link.download = filename;
+  link.click();
+}
+
+
 function Dashboard() {
   const history = useHistory();
 
@@ -47,6 +62,36 @@ function Dashboard() {
     window.localStorage.getItem("ROLE") === STOREHOUSE && history.push("/storehouse");
     window.localStorage.getItem("ROLE") === CASHIER && history.push("/cashier");
   }, []);
+
+  const handlerLiquidation = () => {
+
+    const current = new Date();
+    current.setMonth(current.getMonth() - 1);
+    const previousMonth = current.toLocaleString('default', { month: 'long' });
+    const filename = `liquidación_${previousMonth}_${current.getFullYear()}`
+    const starsRef = ref(storage, `liquidate/${filename}.xlsx`);
+
+    getDownloadURL(starsRef)
+      .then((url) => {
+        downloadURI(url, `${filename}.xlsx`)
+      })
+      .catch((error) => {
+        axios({
+          method: "GET",
+          url: `${ApiUrl}admin/liquidateContributions`,
+          headers: { Authorization: `${window.localStorage.getItem("USER_KEY")}` }
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              downloadURI(res.data.url, `${filename}.xlsx`)
+            }
+          })
+          .catch((err) => {
+            alert('algo ha sucedido, Comuníquese con el soporte')
+          });
+      });
+  };
+
 
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -87,7 +132,11 @@ function Dashboard() {
             </Grid>
           </Grid>
         </Container>
+
       </main>
+      <div>
+        <button onClick={() => handlerLiquidation()}>liquidación Mensual</button>
+      </div>
     </div>
   );
 }

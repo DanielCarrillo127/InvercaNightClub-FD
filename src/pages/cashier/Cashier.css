@@ -48,11 +48,16 @@
 }
 .reference{
   margin: 10px 0;
-  font-size: 46px;
+  font-size: 76px;
   line-height: 18px;
   width: 100%;
   font-weight: 300;
-  width: 440px;
+  width: 340px;
+}
+.reference::placeholder{
+  font-size: 76px;
+  color: black;
+  
 }
 
 .leftspace {

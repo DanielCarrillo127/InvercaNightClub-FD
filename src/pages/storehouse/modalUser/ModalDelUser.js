@@ -4,17 +4,20 @@ import "./Modal.css";
 import { DataContext } from '../../../api/products';
 
 
-export default function ModalDelete(props) {
+export default function ModalDelUser(props) {
 
     const context = useContext(DataContext);
-    const [productId, setproductId] = useState("");
+
+    const [cedula, setCedula] = useState();
 
     const handleClickModal = () => {
-        deleteToCart()
+        DeleteUser()
     }
-    const deleteToCart = () => {
-        context?.deleteProduct(window.localStorage.USER_KEY,productId);
-        props.onClose();
+    const DeleteUser = () => {
+        if (window.confirm("Estas seguro que deseas eliminar este cliente?") === true) {
+            context?.DelUser(window.localStorage.USER_KEY, cedula);
+            props.onClose(); 
+        }
     };
 
     if (!props.isOpen) {
@@ -29,17 +32,16 @@ export default function ModalDelete(props) {
                 </button>
                 <div >
                     <div>
-                        <h1>Eliminar un producto</h1>
-                        <label>ingrese el id* del producto a eliminar:</label>
-                        <input className="" type="text" onChange={(e) => {setproductId(e.target.value);}} required/>
-                       
+                        <h1>Agregar un Nuevo Cliente</h1>
+                        <label>ingrese el cedula del cliente:</label>
+                        <input className="" type="text" onChange={(e) => { setCedula(e.target.value); }} required />                        
                     </div>
                     <button className="btn--cart" onClick={() => handleClickModal()}>
-                            Eliminar Producto
-                        </button>
+                        Eliminar Cliente
+                    </button>
                 </div>
             </div>
         </div>,
-        document.getElementById("modaldelete")
+        document.getElementById("modaldeluser")
     );
 }

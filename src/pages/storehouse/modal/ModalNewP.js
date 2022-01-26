@@ -3,7 +3,8 @@ import ReactDOM from "react-dom";
 import "./Modal.css";
 import { DataContext } from '../../../api/products';
 import { storage } from "../../../firebase";
-import {getDownloadURL, ref, uploadBytesResumable} from "@firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "@firebase/storage";
+
 
 export default function Modal(props) {
 
@@ -18,40 +19,44 @@ export default function Modal(props) {
     const [progress, setProgress] = useState(0);
 
     const handleClickModal = () => {
+        addToCart();
+    }
+    const handleClickuploudImage = () => {
         uploudImage();
     }
 
     const addToCart = () => {
         context?.addProduct(window.localStorage.USER_KEY, proname, price, quantity, category, imageRef);
         setProgress(0);
+        setImage(null);
+        setImageRef("");
         props.onClose();
+        
     };
 
     const handleChange = e => {
         if (e.target.files[0]) {
-            // console.log(e.target.files[0])
             setImage(e.target.files[0]);
         }
-      };
+    };
 
     const uploudImage = () => {
-        const storageRef = ref(storage,`/files/${proname}`);
-        const uploadTask = uploadBytesResumable(storageRef,image);
-        uploadTask.on("state_changed",(snapshot) => {
+        const storageRef = ref(storage, `/files/${proname}`);
+        const uploadTask = uploadBytesResumable(storageRef, image);
+        uploadTask.on("state_changed", (snapshot) => {
             const prog = Math.round(
                 (snapshot.bytesTransferred / snapshot.totalBytes) * 100
             )
             setProgress(prog);
-        }, (err)=>console.log(err),
+        }, (err) => console.log(err),
             () => {
                 getDownloadURL(uploadTask.snapshot.ref)
-                .then(url => {
-                    setImageRef(url);
-                    console.log(imageRef)
-                    if(imageRef !== ""){
-                        setTimeout(addToCart, 3000);
-                    }
-                })    
+                    .then(url => {
+                        setImageRef(url);
+                        if(imageRef !== ""){
+                            alert('Se agrego la imagen exitosamente')
+                        }
+                    })
             }
         );
     };
@@ -78,12 +83,16 @@ export default function Modal(props) {
                         <label>Ingrese la categoria del producto:</label>
                         <input className="" type="text" onChange={(e) => { setCategory(e.target.value); }} required />
                         <label>Ingrese la imagen del producto:</label>
-                        <input className="" type="file" accept=".jpg,.png,.jpeg" onChange={handleChange} required />
+                        <input className="imageInput" type="file"  onChange={handleChange} required />
                         <h5>Cargando: {progress}% </h5>
+                        <button className="btn--cart" onClick={() => handleClickuploudImage()}>
+                            Subir imagen
+                        </button>
                     </div>
                     <button className="btn--cart" onClick={() => handleClickModal()}>
                         Agregar Producto
-                        </button>
+                    </button>
+
                 </div>
             </div>
         </div>,
