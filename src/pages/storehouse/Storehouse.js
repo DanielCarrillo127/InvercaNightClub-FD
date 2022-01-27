@@ -10,6 +10,7 @@ import ModalDelete from "./modal/ModalDelP";
 import ModalEdit from "./modal/ModalEditP";
 import ModalNewUser from "./modalUser/ModalNewUser";
 import ModalDelUser from "./modalUser/ModalDelUser";
+import ModalExtract from "./modal/ModalExtract";
 
 const ROLE = window.localStorage.getItem("ROLE");
 
@@ -20,12 +21,9 @@ export default class Storehouse extends Component {
     openModal3: false,
     openModal4: false,
     openModal5: false,
+    openModal6: false,
   };
   componentDidMount() {
-    // if (ROLE === Roles.CASHIER) {
-    //     console.log("Entro porque ", ROLE, Roles.CASHIER)
-    //   this.props.history.push("/cashier");
-    // }
     ROLE === Roles.CASHIER && this.props.history.push("/cashier");
   }
 
@@ -50,6 +48,11 @@ export default class Storehouse extends Component {
     const handleOpenModalDelUser = () => {
       this.setState({ openModal5: true });
     };
+
+    const handleOpenModalExtract = () => {
+      this.setState({ openModal6: true });
+    };
+    
 
     
 
@@ -114,6 +117,9 @@ export default class Storehouse extends Component {
                     <button className="btn btn1"  onClick={() => handleOpenModalDelUser()}>
                       Eliminar Cliente retenido
                     </button>
+                    <button className="btn btn1"  onClick={() => handleOpenModalExtract()}>
+                      Historial de Compra Cliente Retenido
+                    </button>
                   </div>
                 </div>
               </>}
@@ -143,7 +149,7 @@ export default class Storehouse extends Component {
                             <td>{item.proname}</td>
                             <td>{item.productid}</td>
                             <td>{item.quantity}</td>
-                            <td>{item.price}</td>
+                            <td>${item.price}</td>
                             <td>{item.category}</td>
                           </tr>
                         ))}
@@ -189,6 +195,11 @@ export default class Storehouse extends Component {
             onClose={() => this.setState({ openModal5: false })}>
             Lorem
           </ModalDelUser>
+          <ModalExtract
+            isOpen={this.state.openModal6} 
+            onClose={() => this.setState({ openModal6: false })}>
+            Lorem
+          </ModalExtract>
 
         </div>
       </div>

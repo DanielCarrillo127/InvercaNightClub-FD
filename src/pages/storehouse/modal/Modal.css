@@ -29,6 +29,16 @@
     border-radius: 15px;
   }
 
+  .Modal__containerEx {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #ffffff;
+    padding: 2rem;
+    width: 850px;
+    border-radius: 15px;
+  }
+
   
   .Modal__close-button {
     position: absolute;

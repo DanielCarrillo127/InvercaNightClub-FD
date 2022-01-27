@@ -46,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function downloadURI(dataurl, filename) {
   const link = document.createElement("a");
   link.href = dataurl;
@@ -54,9 +53,9 @@ function downloadURI(dataurl, filename) {
   link.click();
 }
 
-
 function Dashboard() {
   const history = useHistory();
+
 
   useEffect(() => {
     window.localStorage.getItem("ROLE") === STOREHOUSE && history.push("/storehouse");
@@ -91,7 +90,6 @@ function Dashboard() {
           });
       });
   };
-
 
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
@@ -137,6 +135,7 @@ function Dashboard() {
       <div>
         <button onClick={() => handlerLiquidation()}>liquidación Mensual</button>
       </div>
+
     </div>
   );
 }
