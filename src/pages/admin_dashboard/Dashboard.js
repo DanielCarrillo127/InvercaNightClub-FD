@@ -132,8 +132,8 @@ function Dashboard() {
         </Container>
 
       </main>
-      <div>
-        <button onClick={() => handlerLiquidation()}>liquidación Mensual</button>
+      <div> 
+        <button className="btn3 btn1" onClick={() => handlerLiquidation()}>liquidación Mensual</button>
       </div>
 
     </div>

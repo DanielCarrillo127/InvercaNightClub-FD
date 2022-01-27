@@ -5,6 +5,8 @@ import { ApiUrl } from "../../../Url";
 import axios from "axios";
 import { DataContext } from "../../../api/products";
 
+import exportFromJSON from 'export-from-json'
+
 
 export default function ModalExtract(props) {
 
@@ -17,6 +19,15 @@ export default function ModalExtract(props) {
 
     const handleClickModal = () => {
         ExtractUser()
+    }
+
+    const handleClickDownload = () => {
+        if (table) {
+            const data = table
+            const fileName = `Historial_${cedula}`
+            const exportType = 'xls'
+            exportFromJSON({ data, fileName, exportType })
+        }
     }
 
     const ExtractUser = () => {
@@ -33,6 +44,7 @@ export default function ModalExtract(props) {
                         const product = products.filter((product) => product.productid === item.productid)
                         item.productid = product[0].proname
                         item.PrecioProducto = product[0].price
+                        item.FechadeCompra = item.FechadeCompra.substring(0, 10)
                     });
                     setTable(data)
                 }
@@ -68,7 +80,7 @@ export default function ModalExtract(props) {
                             {table.map((item) => (
                                 <tr className="item">
                                     <td>{item.idOrden}</td>
-                                    <td>{item.FechadeCompra.substring(0, 10)}</td>
+                                    <td>{item.FechadeCompra}</td>
                                     <td>{item.TipodeCompra}</td>
                                     <td>{item.ComplementoPago}</td>
                                     <td>{item.TotalOrden}</td>
@@ -90,7 +102,7 @@ export default function ModalExtract(props) {
     const handleClickClose = () => {
         setTable()
         props.onClose();
-    }   
+    }
 
 
     if (!props.isOpen) {
@@ -100,7 +112,7 @@ export default function ModalExtract(props) {
     return ReactDOM.createPortal(
         <div className="Modal">
             <div className="Modal__containerEx">
-                <button className="Modal__close-button" onClick={()=>handleClickClose()} >
+                <button className="Modal__close-button" onClick={() => handleClickClose()} >
                     x
                 </button>
                 <div >
@@ -113,6 +125,12 @@ export default function ModalExtract(props) {
                     <button className="btn--cart" onClick={() => handleClickModal()}>
                         Buscar Usuario
                     </button>
+                    <div>
+                        <button className="btn--cart" onClick={() => handleClickDownload()}>
+                            Descargar Historial
+                        </button>
+                    </div>
+
                 </div>
             </div>
         </div>,

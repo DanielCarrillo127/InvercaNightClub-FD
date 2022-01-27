@@ -78,6 +78,20 @@
   transition: .3s linear;
   margin-left: 50px;
 }
+.btn3{
+  margin: 10px 0;
+  width: 150px;
+  height: 70px;
+  border: none;
+  background-color:var(--primarycolor);
+  color: #fff;
+  font-size: 18px;
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  transition: .3s linear;
+  margin-left: 50px;
+}
 
 .btn1:hover {
   transform: rotateX(14deg);
